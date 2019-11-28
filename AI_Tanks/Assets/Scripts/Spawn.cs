@@ -17,7 +17,8 @@ public class Spawn : MonoBehaviour
         int spot = Random.Range(0, 4);
         if(spot == 0)
         {
-            Instantiate(player, Spawn1.transform.position,Quaternion.identity);//make rotate towarde the center
+            player.transform.position = Spawn1.transform.position;
+            player.transform.rotation = Quaternion.identity;//make rotate towarde the center
 
             Instantiate(enemy, Spawn2.transform.position, Quaternion.identity);//make rotate towarde the center
             Instantiate(enemy, Spawn3.transform.position, Quaternion.identity);//make rotate towarde the center
@@ -25,7 +26,8 @@ public class Spawn : MonoBehaviour
         }
         else if(spot == 1)
         {
-            Instantiate(player, Spawn2.transform.position, Quaternion.identity);//make rotate towarde the center
+            player.transform.position = Spawn2.transform.position;
+            player.transform.rotation = Quaternion.identity;//make rotate towarde the center
 
             Instantiate(enemy, Spawn1.transform.position, Quaternion.identity);//make rotate towarde the center
             Instantiate(enemy, Spawn3.transform.position, Quaternion.identity);//make rotate towarde the center
@@ -33,7 +35,8 @@ public class Spawn : MonoBehaviour
         }
         else if (spot == 2)
         {
-            Instantiate(player, Spawn3.transform.position, Quaternion.identity);//make rotate towarde the center
+            player.transform.position = Spawn3.transform.position;
+            player.transform.rotation = Quaternion.identity;//make rotate towarde the center
 
             Instantiate(enemy, Spawn1.transform.position, Quaternion.identity);//make rotate towarde the center
             Instantiate(enemy, Spawn2.transform.position, Quaternion.identity);//make rotate towarde the center
@@ -41,7 +44,8 @@ public class Spawn : MonoBehaviour
         }
         else if (spot == 3)
         {
-            Instantiate(player, Spawn4.transform.position, Quaternion.identity);//make rotate towarde the center
+            player.transform.position = Spawn4.transform.position;
+            player.transform.rotation = Quaternion.identity;//make rotate towarde the centerw
 
             Instantiate(enemy, Spawn1.transform.position, Quaternion.identity);//make rotate towarde the center
             Instantiate(enemy, Spawn2.transform.position, Quaternion.identity);//make rotate towarde the center
