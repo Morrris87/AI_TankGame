@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var rotationSpeed = 300;
+        var rotationSpeed = 80;
 
         if (Input.GetMouseButtonDown(0))
         {

@@ -9,6 +9,12 @@ public class GunShot : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem MuzzelFlash;
     public GameObject ImpactEffect;
+    bool muzzleOn;
+
+    private void Start()
+    {
+        muzzleOn = false;
+    }
     void Update()
     {
         if(Input.GetButtonDown("Fire1"))
@@ -19,8 +25,12 @@ public class GunShot : MonoBehaviour
 
     void Shoot()
     {
-        MuzzelFlash.Play();
-
+        if (MuzzelFlash != null)
+        {
+            ParticleSystem.EmissionModule emission = MuzzelFlash.emission;
+            MuzzelFlash.Play();
+            emission.enabled = muzzleOn;
+        }
         RaycastHit hit;
        if( Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
         {
