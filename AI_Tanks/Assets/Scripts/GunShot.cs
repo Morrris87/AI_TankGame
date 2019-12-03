@@ -8,11 +8,18 @@ public class GunShot : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem MuzzelFlash;
 
-    public ParticleSystem MachineGun1;
-    public ParticleSystem MachineGun2;
-
     public GameObject ImpactEffect;
     bool muzzleOn;
+
+
+    //Drag in the Bullet Emitter from the Component Inspector.
+    public GameObject Bullet_Emitter;
+
+    //Drag in the Bullet Prefab from the Component Inspector.
+    public GameObject Bullet;
+
+    //Enter the Speed of the Bullet from the Component Inspector.
+    public float Bullet_Forward_Force;
 
     void Update()
     {
@@ -23,6 +30,7 @@ public class GunShot : MonoBehaviour
 
     }
 
+
     void Shoot()
     {
         if (MuzzelFlash != null)
@@ -31,24 +39,27 @@ public class GunShot : MonoBehaviour
             MuzzelFlash.Play();
             emission.enabled = muzzleOn;
         }
-        RaycastHit hit;
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, range))
+
+
+        //    GameObject ImpactGO = Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
+        //    Destroy(ImpactGO, 2f);
+
+        if (Input.GetButtonDown("Fire1"))
         {
-            Debug.Log(hit.transform.name);
-            TargetHit target = hit.transform.GetComponent<TargetHit>();
 
-            if (target != null)
-            {
-                target.TakeDamage(damage);
-            }
+            GameObject Temporary_Bullet_Handler;
 
-            if (hit.rigidbody != null)
-            {
-                hit.rigidbody.AddForce(-hit.normal * 300);
-            }
+            Temporary_Bullet_Handler = Instantiate(Bullet, Bullet_Emitter.transform.position, Bullet_Emitter.transform.rotation) as GameObject;
 
-            GameObject ImpactGO = Instantiate(ImpactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(ImpactGO, 2f);
+            Temporary_Bullet_Handler.transform.Rotate(Vector3.left * 90);
+
+            Rigidbody Temporary_RigidBody;
+            Temporary_RigidBody = Temporary_Bullet_Handler.GetComponent<Rigidbody>();
+
+            Temporary_RigidBody.AddForce(transform.forward * Bullet_Forward_Force);
+
+
+            Destroy(Temporary_Bullet_Handler, 3.0f);
         }
     }
 

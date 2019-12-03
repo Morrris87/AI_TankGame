@@ -28,4 +28,16 @@ public class TargetHit : MonoBehaviour
         gameObject.GetComponent<BoxCollider>().enabled = false;
         Destroy(tank, 0.2f);
     }
+
+    private void OnCollisionEnter(Collision c)
+    {
+        if (c.gameObject.tag == "Enemy")
+        {
+            Vector3 dir = c.contacts[0].point - transform.position;
+
+            dir = -dir.normalized;
+
+            GetComponent<Rigidbody>().AddForce(dir * 50000);
+        }
+    }
 }
