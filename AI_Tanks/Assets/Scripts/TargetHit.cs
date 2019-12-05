@@ -10,34 +10,46 @@ public class TargetHit : MonoBehaviour
     public AudioClip BlowupSound;
     public AudioSource audioSource;
     public GameObject tank;
-
     public void TakeDamage(float amount)
     {
         health -= amount;
         if (health <= 0f)
         {
-
             Die();
         }
     }
 
     void Die()
     {
+        GetComponent<BoxCollider>().enabled = false;
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        transform.rotation = Quaternion.LookRotation(transform.forward ,Vector3.up);
         Blowup.Play();
         audioSource.PlayOneShot(BlowupSound);
-        gameObject.GetComponent<BoxCollider>().enabled = false;
+        //PlayEffectOnce(Blowup, this.transform.position);
         Destroy(tank, 0.2f);
+        Destroy(gameObject, 4.2f);
     }
 
     private void OnCollisionEnter(Collision c)
     {
-        if (c.gameObject.tag == "Enemy")
+        if(c.gameObject.tag == "Bullet")
         {
-            Vector3 dir = c.contacts[0].point - transform.position;
+            TakeDamage(10f);
+            Vector3 dir = c.GetContact(0).point - transform.position;
 
             dir = -dir.normalized;
 
-            GetComponent<Rigidbody>().AddForce(dir * 50000);
+            GetComponent<Rigidbody>().AddForce(dir * 250);
         }
+    }
+    protected void PlayEffectOnce(ParticleSystem prefab, Vector3 position)
+    {
+        if (prefab == null)
+        {
+        }
+        ParticleSystem ps = Instantiate(prefab, position, Quaternion.identity) as ParticleSystem;
+        Destroy(ps.gameObject, ps.time);
     }
 }

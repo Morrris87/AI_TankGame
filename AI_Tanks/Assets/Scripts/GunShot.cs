@@ -2,9 +2,6 @@
 
 public class GunShot : MonoBehaviour
 {
-    public float damage = 10.0f;
-    public float range = 100f;
-
     public Camera fpsCam;
     public ParticleSystem MuzzelFlash;
 

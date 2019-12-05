@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     PlayerController playerController;
     Rigidbody rb;
     public int health;
-    public float speed = 0.1f;
+    public float speed = 0f;
 
     public AudioClip Backup;
     public AudioClip Drive;
@@ -22,13 +22,20 @@ public class PlayerController : MonoBehaviour
     private float elapsedTime = 1f;
     private float intervalTime = 1.0f;
 
+
+    float maxSpeed = 10f;
+    public float accelerationTime = 20;
+    private float minSpeed;
+    private float time;
+
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(FireMachineGun());
         playerController = GetComponent<PlayerController>();
         rb = GetComponent<Rigidbody>();
-
+        minSpeed = speed;
+        time = 0;
     }
 
     // Update is called once per frame
@@ -45,7 +52,14 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 mover = transform.position + (-transform.forward * speed * Time.deltaTime);
             //this.transform.position += new Vector3(0.0f, 0.0f,-1.0f*Time.deltaTime);
+            speed = Mathf.SmoothStep(minSpeed, maxSpeed, time / accelerationTime);
+            time += Time.deltaTime;
             rb.MovePosition(mover);
+        }
+        else
+        {
+            speed = minSpeed;
+            time = 0;
         }
         if (Input.GetKey(KeyCode.S))
         {
