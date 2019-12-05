@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     private float elapsedTime = 1f;
     private float intervalTime = 1.0f;
-
+    private bool Bdead;
 
     float maxSpeed = 10f;
     public float accelerationTime = 20;
@@ -36,65 +36,80 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         minSpeed = speed;
         time = 0;
+        Bdead = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        var rotationSpeed = 80;
-
-        if (Input.GetMouseButtonDown(0))
+        if (!Bdead)
         {
-            audioSource.PlayOneShot(BigShot);
-        }
+            var rotationSpeed = 80;
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            Vector3 mover = transform.position + (-transform.forward * speed * Time.deltaTime);
-            //this.transform.position += new Vector3(0.0f, 0.0f,-1.0f*Time.deltaTime);
-            speed = Mathf.SmoothStep(minSpeed, maxSpeed, time / accelerationTime);
-            time += Time.deltaTime;
-            rb.MovePosition(mover);
-        }
-        else
-        {
-            speed = minSpeed;
-            time = 0;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            Vector3 mover = transform.position + (transform.forward * speed * Time.deltaTime);
-            //this.transform.position += new Vector3(0.0f, 0.0f, 1.0f * Time.deltaTime);
-            rb.MovePosition(mover);
-
-            elapsedTime += Time.deltaTime;
-
-            if (elapsedTime >= intervalTime)
+            if (Input.GetMouseButtonDown(0))
             {
-                audioSource.PlayOneShot(Backup);
-                elapsedTime = 0.0f;
+                audioSource.PlayOneShot(BigShot);
             }
-            
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            this.transform.Rotate(-Vector3.up * (rotationSpeed * Time.deltaTime));
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            this.transform.Rotate(Vector3.up * (rotationSpeed * Time.deltaTime));
-        }
-        //if(health < 0)
-        //{
-        //    moveDirection = new Vector3(Input.GetAxis("Horozontal"), 0.0f, 0.0f);
-        //    moveDirection *= speed;
-        //}
-        //playerController.transform.position += (moveDirection * Time.deltaTime);
 
-        if(Input.GetKey(KeyCode.Space))
-        {
-            transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+            if (Input.GetKey(KeyCode.W))
+            {
+                Vector3 mover = transform.position + (-transform.forward * speed * Time.deltaTime);
+                //this.transform.position += new Vector3(0.0f, 0.0f,-1.0f*Time.deltaTime);
+                speed = Mathf.SmoothStep(minSpeed, maxSpeed, time / accelerationTime);
+                time += Time.deltaTime;
+                rb.MovePosition(mover);
+            }
+            else
+            {
+                speed = minSpeed;
+                time = 0;
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                Vector3 mover = transform.position + (transform.forward * speed * Time.deltaTime);
+                //this.transform.position += new Vector3(0.0f, 0.0f, 1.0f * Time.deltaTime);
+                rb.MovePosition(mover);
+
+                elapsedTime += Time.deltaTime;
+
+                if (elapsedTime >= intervalTime)
+                {
+                    audioSource.PlayOneShot(Backup);
+                    elapsedTime = 0.0f;
+                }
+
+            }
+            if (Input.GetKey(KeyCode.A))
+            {
+                this.transform.Rotate(-Vector3.up * (rotationSpeed * Time.deltaTime));
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                this.transform.Rotate(Vector3.up * (rotationSpeed * Time.deltaTime));
+            }
+            //if(health < 0)
+            //{
+            //    moveDirection = new Vector3(Input.GetAxis("Horozontal"), 0.0f, 0.0f);
+            //    moveDirection *= speed;
+            //}
+            //playerController.transform.position += (moveDirection * Time.deltaTime);
+
+            if (Input.GetKey(KeyCode.Space))
+            {
+                transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+            }
+
+            if (health <= 0)
+            {
+                Bdead = true;
+                dead();
+            }
         }
+    }
+
+    void dead()
+    {
+
     }
 
     IEnumerator FireMachineGun()

@@ -24,10 +24,12 @@ public class TargetHit : MonoBehaviour
         GetComponent<BoxCollider>().enabled = false;
         GetComponent<Rigidbody>().useGravity = false;
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        transform.rotation = Quaternion.LookRotation(transform.forward ,Vector3.up);
+
         Blowup.Play();
         audioSource.PlayOneShot(BlowupSound);
-        //PlayEffectOnce(Blowup, this.transform.position);
+
+        transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+
         Destroy(tank, 0.2f);
         Destroy(gameObject, 4.2f);
     }
@@ -41,7 +43,7 @@ public class TargetHit : MonoBehaviour
 
             dir = -dir.normalized;
 
-            GetComponent<Rigidbody>().AddForce(dir * 250);
+            GetComponent<Rigidbody>().AddForce(dir * 300);
         }
     }
     protected void PlayEffectOnce(ParticleSystem prefab, Vector3 position)
