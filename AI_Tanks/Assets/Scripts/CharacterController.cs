@@ -6,8 +6,9 @@ public class CharacterController : MonoBehaviour
 {
     // Start is called before the first frame update
     CharacterController characterController;
-    public int health;
-    public int speed = 5;
+    UIController uiController;
+    public float health;
+    public float speed = 5f;
     public int knockBack;
 
     private Vector3 moveDirection = Vector3.zero;
@@ -16,6 +17,7 @@ public class CharacterController : MonoBehaviour
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        uiController = GameObject.Find("healthSlider").GetComponent<UIController>();
     }
 
     // Update is called once per frame
@@ -27,5 +29,14 @@ public class CharacterController : MonoBehaviour
             moveDirection *= speed;
         }
         //characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Use this to deal damage to the player tank
+    /// </summary>
+    public void TakeDamage(float damageIn)
+    {
+        health += damageIn;
+        uiController.UpdateUI();
     }
 }

@@ -43,5 +43,23 @@ public class EnemyController : MonoBehaviour
     {
 
     }
+
+    /// <summary>
+    /// Use in determining distances
+    /// </summary>
+    /// <param name="trans"></param>
+    /// <param name="pos"></param>
+    /// <param name="range"></param>
+    /// <returns>Whether or not the transform and position are in the given range</returns>
+    private bool IsInCurrentRange(Transform trans, Vector3 pos, int range)
+    {
+        bool inRange = false;
+        float dist = Vector3.Distance(trans.position, pos);
+        if (dist <= range)
+        {
+            inRange = true;
+        }
+        return inRange;
+    }
 }
 
