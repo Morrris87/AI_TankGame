@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    CharacterController characterController;
+    TargetHit characterTargetHit;
     Slider healthSlider;
 
     // Start is called before the first frame update
     void Start()
     {
-        characterController = GameObject.Find("Player").GetComponent<CharacterController>();
-        healthSlider = GameObject.Find("healthSlider").GetComponent<Slider>();
+        characterTargetHit = GameObject.Find("Player").GetComponent<TargetHit>();
+        healthSlider = GameObject.Find("HealthSlider").GetComponent<Slider>();
     }
 
     // Update is called once per frame
@@ -23,6 +23,6 @@ public class UIController : MonoBehaviour
 
     public void UpdateUI()
     {
-        healthSlider.value = characterController.health;
+        healthSlider.value = characterTargetHit.health;
     }
 }

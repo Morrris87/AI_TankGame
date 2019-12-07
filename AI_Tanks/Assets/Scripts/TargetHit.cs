@@ -10,9 +10,18 @@ public class TargetHit : MonoBehaviour
     public AudioClip BlowupSound;
     public AudioSource audioSource;
     public GameObject tank;
+    public GameObject UI;
+
     public void TakeDamage(float amount)
     {
         health -= amount;
+
+        //if this is the player update the ui
+        if(this.name == "Player")
+        {
+            UI.GetComponent<UIController>().UpdateUI();
+        }
+
         if (health <= 0f)
         {
             Die();
@@ -39,6 +48,7 @@ public class TargetHit : MonoBehaviour
         if(c.gameObject.tag == "Bullet")
         {
             TakeDamage(10f);
+
             Vector3 dir = c.GetContact(0).point - transform.position;
 
             dir = -dir.normalized;
@@ -53,5 +63,10 @@ public class TargetHit : MonoBehaviour
         }
         ParticleSystem ps = Instantiate(prefab, position, Quaternion.identity) as ParticleSystem;
         Destroy(ps.gameObject, ps.time);
+    }
+
+    void FixedUpdate()
+    {
+        //uiController.UpdateUI();
     }
 }

@@ -30,13 +30,4 @@ public class CharacterController : MonoBehaviour
         }
         //characterController.Move(moveDirection * Time.deltaTime);
     }
-
-    /// <summary>
-    /// Use this to deal damage to the player tank
-    /// </summary>
-    public void TakeDamage(float damageIn)
-    {
-        health += damageIn;
-        uiController.UpdateUI();
-    }
 }
