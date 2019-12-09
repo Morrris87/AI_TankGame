@@ -40,14 +40,18 @@ public class FleeState : State<AI>
 
     public override void UpdateState(AI _owner)
     {
-        if(!_owner.LowHealth)
+        if(_owner.health > 15)
         {
             _owner.stateMachine.ChangeState(WanderState.Instance);
         }
-        else if (_owner.NoHealth)
+        else if (_owner.health <= 0)
         {
             _owner.stateMachine.ChangeState(DeathState.Instance);
         }
+    }
 
+    public override void Act(AI _owner)
+    {
+        throw new System.NotImplementedException();
     }
 }

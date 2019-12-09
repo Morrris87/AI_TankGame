@@ -1,60 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using StateStuff;
+using Complete;
 
-public class AttackState : State<AI>
+public class AttackState : FSMState
 {
-    private static AttackState _instance;
-
-    private AttackState()
+    AI enemyAI;
+    float health;
+    float elapsedTime;
+    float intervalTime;
+    float shotElapsed;
+    float shotTimer;
+    EnemyController enemyController;
+    public AttackState(AI enemyTank)
     {
-        if(_instance != null)
-        {
-            return;
-        }
+        stateID = FSMStateID.Attacking;
+        curRotSpeed = 1.0f;
+        curSpeed = 0.0f;
+        elapsedTime = 0.0f;
+        intervalTime = 5.0f;
 
-        _instance = this;
-    }
-    public static  AttackState Instance
-    {
-        get
-        {
-            if(_instance == null)
-            {
-                new AttackState();
-            }
-            return _instance;
-        }
+        enemyAI = enemyTank;
+        health = enemyAI.health;
+
+        enemyController = enemyAI.Turret.GetComponent<EnemyController>();
     }
 
-    public override void EnterState(AI _owner)
+    public override void EnterStateInit()
     {
+        elapsedTime = 0.0f;
         Debug.Log("Entering Attack State");
     }
 
-    public override void ExitState(AI _owner)
+    public override void Reason()
     {
-        Debug.Log("Exiting Attack State");
+        Transform tank = enemyAI.gameObject.transform;
+        Transform player = enemyAI.Player.transform;
+
+        float dist = Vector3.Distance(tank.position, player.position);
+
+        if (health <= 0)
+        {
+            enemyAI.PerformTransition(Transition.NoHealth);
+            return;
+        }
+
+        if (health <= 15)
+        {
+            enemyAI.PerformTransition(Transition.Hiding);
+            Debug.Log("Fleeing");
+            return;
+        }
+
+        elapsedTime += Time.deltaTime;
+        if (elapsedTime > intervalTime)
+        {
+            elapsedTime = 0.0f;
+            enemyAI.PerformTransition(Transition.SawPlayer);
+        }
+
+        else if (IsInCurrentRange(tank, player.position, enemyAI.attackRange))
+        {
+            shotElapsed += Time.deltaTime;
+            if(shotElapsed > shotTimer)
+            {
+                enemyController.attack = true;
+                shotElapsed = 0.0f;
+            }
+        }
+
+        else if(IsInCurrentRange(tank, player.position, enemyAI.chaseRange))
+        {
+            enemyAI.PerformTransition(Transition.SawPlayer);
+        }
+
+        else
+        {
+            enemyAI.PerformTransition(Transition.LostPlayer);
+        }
     }
 
-    public override void UpdateState(AI _owner)
+    public override void Act()
     {
-        if (_owner.LowHealth)
-        {
-            _owner.stateMachine.ChangeState(FleeState.Instance);
-        }
-        else if(!_owner.InRange)
-        {
-            _owner.stateMachine.ChangeState(ChaseState.Instance);
-        }
-        else if(!_owner.SeenPlayer)
-        {
-            _owner.stateMachine.ChangeState(WanderState.Instance);
-        }
-        else if (_owner.NoHealth)
-        {
-            _owner.stateMachine.ChangeState(DeathState.Instance);
-        }
+
     }
 }

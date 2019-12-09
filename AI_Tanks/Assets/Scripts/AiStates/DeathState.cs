@@ -42,4 +42,9 @@ public class DeathState : State<AI>
     {
 
     }
+
+    public override void Act(AI _owner)
+    {
+        throw new System.NotImplementedException();
+    }
 }

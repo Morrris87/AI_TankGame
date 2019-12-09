@@ -1,41 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
-namespace StateStuff
+namespace Complete
 {
-    public class FSM<T>
+    public class FSM : MonoBehaviour
     {
-        public State<T> currentState { get; private set; }
-        public T Owner;
+     
+        protected virtual void Initialize() { }
+        protected virtual void FSMUpdate() { }
+        protected virtual void FSMFixedUpdate() { }
 
-        public FSM(T _o)
+        // Use this for initialization
+        void Start()
         {
-            Owner = _o;
-            currentState = null;
+            Initialize();
         }
-        public void ChangeState(State<T> _newstate)
-        {
-            if (currentState != null)
-            { 
-            currentState.ExitState(Owner);
-            }
-            currentState = _newstate;
-            currentState.EnterState(Owner);
-        }
-        public void Update()
-        {
-            if (currentState != null)
-            {
-                currentState.UpdateState(Owner);
-            }
-        }
-    }
 
-    public abstract class State<T>
-    {
-        public abstract void EnterState(T _owner);
-        public abstract void ExitState(T _owner);
-        public abstract void UpdateState(T _owner);
+        // Update is called once per frame
+        void Update()
+        {
+            FSMUpdate();
+        }
+
+        void FixedUpdate()
+        {
+            FSMFixedUpdate();
+        }
     }
 }

@@ -23712,6 +23712,7 @@ GameObject:
   - component: {fileID: 137131762058648749}
   - component: {fileID: 137131762058648748}
   - component: {fileID: 137131762058648723}
+  - component: {fileID: 7213173518089117197}
   - component: {fileID: 137131762058648750}
   m_Layer: 0
   m_Name: Enemy
@@ -23861,6 +23862,32 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7900001, y: 1.6803932, z: 3.127973}
   m_Center: {x: 0, y: 0.7885361, z: -0.20124435}
+--- !u!114 &7213173518089117197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137131762058648722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89eb42c1a73887f48b5f6cd8cbac4db1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  waypoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  attackRange: 20
+  chaseRange: 35
+  health: 50
+  damage: 10
 --- !u!114 &137131762058648750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23878,6 +23905,7 @@ MonoBehaviour:
   BlowupSound: {fileID: 0}
   audioSource: {fileID: 0}
   tank: {fileID: 0}
+  UI: {fileID: 0}
 --- !u!1 &137131762121018285
 GameObject:
   m_ObjectHideFlags: 0

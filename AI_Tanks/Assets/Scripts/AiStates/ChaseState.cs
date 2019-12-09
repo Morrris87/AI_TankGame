@@ -40,21 +40,29 @@ public class ChaseState : State<AI>
 
     public override void UpdateState(AI _owner)
     {
-        if(_owner.InRange)
-        {
-            _owner.stateMachine.ChangeState(AttackState.Instance);
-        }
-        else if (_owner.LowHealth)
-        {
-            _owner.stateMachine.ChangeState(FleeState.Instance);
-        }
-        if(!_owner.SeenPlayer)
-        {
-            _owner.stateMachine.ChangeState(WanderState.Instance);
-        }
-        else if (_owner.NoHealth)
+        float dist = Vector3.Distance(_owner.transform.position, _owner.Player.transform.position);
+
+        if (_owner.health <= 0)
         {
             _owner.stateMachine.ChangeState(DeathState.Instance);
         }
+
+        if (dist < _owner.attackRange)
+        {
+            _owner.stateMachine.ChangeState(AttackState.Instance);
+        }
+        else if (_owner.health < 15)
+        {
+            _owner.stateMachine.ChangeState(FleeState.Instance);
+        }
+        else if(dist > _owner.chaseRange)
+        {
+            _owner.stateMachine.ChangeState(WanderState.Instance);
+        }
+    }
+
+    public override void Act(AI _owner)
+    {
+        throw new System.NotImplementedException();
     }
 }

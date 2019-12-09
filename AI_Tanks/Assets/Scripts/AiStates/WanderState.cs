@@ -7,8 +7,12 @@ public class WanderState : State<AI>
 {
     private static WanderState _instance;
 
+    int currentWaypoint;
+
     private WanderState()
     {
+        currentWaypoint = Random.Range(0, 7);
+        
         if (_instance != null)
         {
             return;
@@ -30,6 +34,7 @@ public class WanderState : State<AI>
 
     public override void EnterState(AI _owner)
     {
+
         Debug.Log("Entering Wander State");
     }
 
@@ -40,21 +45,45 @@ public class WanderState : State<AI>
 
     public override void UpdateState(AI _owner)
     {
-        if(_owner.SeenPlayer)
+        float dist = Vector3.Distance(_owner.transform.position, _owner.Player.transform.position);
+
+        if (_owner.health <= 0)
+        {
+            _owner.stateMachine.ChangeState(DeathState.Instance);
+        }
+
+        if (dist < _owner.chaseRange)
         {
             _owner.stateMachine.ChangeState(ChaseState.Instance);
         }
-        else if(_owner.InRange)
-        {
-            _owner.stateMachine.ChangeState(AttackState.Instance);
-        }
-        else if(_owner.LowHealth)
+        else if(_owner.health <= 15)
         {
             _owner.stateMachine.ChangeState(FleeState.Instance);
         }
-        else if(_owner.NoHealth)
+    }
+
+    public override void Act(AI _owner)
+    {
+        float dist = Vector3.Distance(_owner.transform.position, _owner.waypoints[currentWaypoint].transform.position);
+
+        if(dist < 0.1)
         {
-            _owner.stateMachine.ChangeState(DeathState.Instance);
+            int temp = currentWaypoint;
+            while (temp == currentWaypoint)
+            {
+                temp = Random.Range(0, 7);
+            }
+            currentWaypoint = temp;
+        }
+        else
+        {
+            Vector3 target = _owner.waypoints[currentWaypoint].transform.position - _owner.transform.position;
+
+            Quaternion targetRot = Quaternion.LookRotation(target);
+
+            _owner.transform.rotation = Quaternion.Slerp(_owner.transform.rotation, targetRot, 3 * Time.deltaTime);
+
+            _owner.transform.position += _owner.transform.forward * 7 * Time.deltaTime;
         }
     }
 }
