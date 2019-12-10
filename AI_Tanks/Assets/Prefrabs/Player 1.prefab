@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 7095328426663420407}
   - component: {fileID: 4983811036019676347}
   - component: {fileID: 4983811036019676346}
+  - component: {fileID: 4324401490898626373}
   m_Layer: 0
   m_Name: Player 1
   m_TagString: Untagged
@@ -390,6 +391,20 @@ MonoBehaviour:
   Bullet_Emitter: {fileID: 2882279517217760697}
   Bullet: {fileID: 4467172675236091571, guid: b5572e95841bbdd4e92575dc1acad150, type: 3}
   Bullet_Forward_Force: -1000
+--- !u!114 &4324401490898626373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3894453337370531482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ccbd8683f7aa00418b6004f5576e8be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxNumOfSlots: 6
+  distance: 4
 --- !u!1 &3950817915297933936
 GameObject:
   m_ObjectHideFlags: 0

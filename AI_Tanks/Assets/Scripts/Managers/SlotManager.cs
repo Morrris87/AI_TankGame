@@ -147,6 +147,8 @@ namespace Complete
 
                 Gizmos.color = c;
                 Gizmos.DrawWireSphere(GetSlotPosition(index), 0.5f);
+                UsefullFunctions.DebugRay(transform.position, ((GetSlotPosition(index) - transform.position).normalized) * distance, c);
+                UsefullFunctions.DebugRay(transform.position, transform.forward * 5.0f, Color.cyan);
             }
         }
 

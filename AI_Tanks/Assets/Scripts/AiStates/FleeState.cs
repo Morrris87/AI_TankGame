@@ -1,57 +1,86 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using StateStuff;
+using Complete;
 
-public class FleeState : State<AI>
+public class FleeState : FSMState
 {
-    private static FleeState _instance;
+    AI enemyAI;
+    float health;
 
-    private FleeState()
+    float elapsedTime;
+    float intervalTime;
+
+    EnemyController enemyController;
+    public FleeState(AI enemyTank)
     {
-        if (_instance != null)
-        {
-            return;
-        }
+        stateID = FSMStateID.Fleeing;
+        curRotSpeed = 2.0f;
+        curSpeed = 5.0f;
 
-        _instance = this;
-    }
-    public static FleeState Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                new FleeState();
-            }
-            return _instance;
-        }
+        enemyAI = enemyTank;
+        health = enemyAI.health;
+
+        enemyController = enemyAI.Turret.GetComponent<EnemyController>();
+
+        elapsedTime = 0.0f;
+        intervalTime = 1.0f;
+        enemyAI.navAgent.speed = curSpeed;
     }
 
-    public override void EnterState(AI _owner)
+    public override void EnterStateInit()
     {
         Debug.Log("Entering Flee State");
     }
 
-    public override void ExitState(AI _owner)
+    public override void Reason()
     {
-        Debug.Log("Exiting Flee State");
+        Transform tank = enemyAI.gameObject.transform;
+        Transform player = enemyAI.Player.transform;
+
+        float dist = Vector3.Distance(tank.position, player.position);
+
+        if (health <= 0)
+        {
+            enemyAI.PerformTransition(Transition.NoHealth);
+            return;
+        }
+
+        if (health > 15)
+        {
+            enemyAI.PerformTransition(Transition.LostPlayer);
+            Debug.Log("Wandering");
+            return;
+        }
+
+        elapsedTime += Time.deltaTime;
+        if(elapsedTime >= intervalTime)
+        {
+            health += 5;
+            elapsedTime = 0.0f;
+        }
     }
 
-    public override void UpdateState(AI _owner)
+    public override void Act()
     {
-        if(_owner.health > 15)
-        {
-            _owner.stateMachine.ChangeState(WanderState.Instance);
-        }
-        else if (_owner.health <= 0)
-        {
-            _owner.stateMachine.ChangeState(DeathState.Instance);
-        }
-    }
+        Transform tank = enemyAI.gameObject.transform;
+        Transform player = enemyAI.Player.transform;
+        float dist = 0;
 
-    public override void Act(AI _owner)
-    {
-        throw new System.NotImplementedException();
+        for (int i = 0; i < enemyAI.waypoints.Length/*-1*/; i++)
+        {
+            float temp = Vector3.Distance(tank.position, enemyAI.waypoints[i].transform.position);
+            if (temp > dist)
+            {
+                dist = temp;
+                destPos = enemyAI.waypoints[i].transform.position;
+            }
+        }
+
+        Quaternion targetRotation = Quaternion.LookRotation(destPos - tank.position);
+
+        tank.rotation = Quaternion.Slerp(tank.rotation, targetRotation, Time.deltaTime * curRotSpeed);
+
+        enemyAI.navAgent.SetDestination(destPos);
     }
 }

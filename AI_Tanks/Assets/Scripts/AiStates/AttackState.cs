@@ -11,6 +11,8 @@ public class AttackState : FSMState
     float intervalTime;
     float shotElapsed;
     float shotTimer;
+
+    int shotCount;
     EnemyController enemyController;
     public AttackState(AI enemyTank)
     {
@@ -24,6 +26,12 @@ public class AttackState : FSMState
         health = enemyAI.health;
 
         enemyController = enemyAI.Turret.GetComponent<EnemyController>();
+
+        shotElapsed = 0.0f;
+        shotTimer = 4.0f;
+        shotCount = 0;
+
+        enemyAI.navAgent.speed = curSpeed;
     }
 
     public override void EnterStateInit()
@@ -66,18 +74,31 @@ public class AttackState : FSMState
             {
                 enemyController.attack = true;
                 shotElapsed = 0.0f;
+                shotCount++;
             }
-        }
+            if (shotCount > enemyAI.enemyClipSize)
+            {
+                enemyAI.PerformTransition(Transition.Charge);
+                shotCount = 0;
+                return;
+            }
 
-        else if(IsInCurrentRange(tank, player.position, enemyAI.chaseRange))
-        {
-            enemyAI.PerformTransition(Transition.SawPlayer);
         }
 
         else
         {
-            enemyAI.PerformTransition(Transition.LostPlayer);
+            if (IsInCurrentRange(tank, player.position, enemyAI.chaseRange))
+            {
+                enemyAI.PerformTransition(Transition.SawPlayer);
+                return;
+            }
+            else
+            {
+                enemyAI.PerformTransition(Transition.LostPlayer);
+            }
         }
+
+        
     }
 
     public override void Act()

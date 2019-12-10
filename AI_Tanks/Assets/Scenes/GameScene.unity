@@ -107,9 +107,9 @@ NavMeshSettings:
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 45
-    agentClimb: 0.4
-    ledgeDropHeight: 0
+    agentSlope: 30
+    agentClimb: 1
+    ledgeDropHeight: 10.83
     maxJumpAcrossDistance: 0
     minRegionArea: 2
     manualCellSize: 0
@@ -209,12 +209,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5152367822249224098, guid: 0376a6c3abe3ae94d97dbc7c25d6e86c,
     type: 3}
   m_PrefabInstance: {fileID: 48064088}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &56212970 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 137131762058648748, guid: ae4073128277f6640aece8a82da74d3d,
-    type: 3}
-  m_PrefabInstance: {fileID: 137131761301902860}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &61830216 stripped
 GameObject:
@@ -535,6 +529,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 137131762058648722, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 137131762058648748, guid: ae4073128277f6640aece8a82da74d3d,
         type: 3}
       propertyPath: MaxDistance
@@ -715,6 +714,21 @@ PrefabInstance:
       propertyPath: waypoints.Array.data[7]
       value: 
       objectReference: {fileID: 1183384701}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: coverPositionsSlotManager
+      value: 
+      objectReference: {fileID: 8296172668529078688}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: navAgent
+      value: 
+      objectReference: {fileID: 589438860}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: Turret
+      value: 
+      objectReference: {fileID: 831761711}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae4073128277f6640aece8a82da74d3d, type: 3}
 --- !u!4 &111553021 stripped
@@ -5366,6 +5380,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 137131762058648722, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 137131762058648748, guid: ae4073128277f6640aece8a82da74d3d,
         type: 3}
       propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
@@ -5556,6 +5575,26 @@ PrefabInstance:
       propertyPath: waypoints.Array.data[7]
       value: 
       objectReference: {fileID: 1183384701}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: coverPositionsSlotManager
+      value: 
+      objectReference: {fileID: 8296172668529078688}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: navAgent
+      value: 
+      objectReference: {fileID: 1492684815}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: m_CharNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: Turret
+      value: 
+      objectReference: {fileID: 325754988}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae4073128277f6640aece8a82da74d3d, type: 3}
 --- !u!4 &380710043 stripped
@@ -10775,6 +10814,28 @@ AudioSource:
     type: 3}
   m_PrefabInstance: {fileID: 111553020}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &589438860
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589438854}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &599250801
 GameObject:
   m_ObjectHideFlags: 0
@@ -13956,7 +14017,7 @@ PrefabInstance:
     - target: {fileID: 137131762058648751, guid: ae4073128277f6640aece8a82da74d3d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 400.71
+      value: 400.438
       objectReference: {fileID: 0}
     - target: {fileID: 137131762058648751, guid: ae4073128277f6640aece8a82da74d3d,
         type: 3}
@@ -14073,6 +14134,17 @@ PrefabInstance:
       propertyPath: turret
       value: 
       objectReference: {fileID: 833479033}
+    - target: {fileID: 1877631144938521645, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: Bullet
+      value: 
+      objectReference: {fileID: 4467172675236091571, guid: b5572e95841bbdd4e92575dc1acad150,
+        type: 3}
+    - target: {fileID: 1877631144938521645, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: Bullet_Forward_Force
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
         type: 3}
       propertyPath: Player
@@ -14118,6 +14190,41 @@ PrefabInstance:
       propertyPath: waypoints.Array.data[7]
       value: 
       objectReference: {fileID: 1183384701}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: coverPositionsSlotManager
+      value: 
+      objectReference: {fileID: 8296172668529078688}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: navAgent
+      value: 
+      objectReference: {fileID: 1268666806}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: m_CharNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: Turret
+      value: 
+      objectReference: {fileID: 833479033}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: attackRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: chaseRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7213173518089117197, guid: ae4073128277f6640aece8a82da74d3d,
+        type: 3}
+      propertyPath: rammingRange
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae4073128277f6640aece8a82da74d3d, type: 3}
 --- !u!4 &734911012 stripped
@@ -14374,7 +14481,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16466
+  m_Name: pb_Mesh34236
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14739,6 +14846,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerTank
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: a179e27ae0d5ac247bd234788d57c8cd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a179e27ae0d5ac247bd234788d57c8cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -14808,7 +14920,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16900
+  m_Name: pb_Mesh34706
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14971,7 +15083,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16592
+  m_Name: pb_Mesh34368
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20538,7 +20650,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16630
+  m_Name: pb_Mesh34414
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20844,7 +20956,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16558
+  m_Name: pb_Mesh34334
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -21148,6 +21260,28 @@ AudioSource:
     type: 3}
   m_PrefabInstance: {fileID: 734911011}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &1268666806
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1268666800}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 1
+  m_Acceleration: 1
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0.1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1281284312
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27276,6 +27410,28 @@ AudioSource:
     type: 3}
   m_PrefabInstance: {fileID: 380710042}
   m_PrefabAsset: {fileID: 0}
+--- !u!195 &1492684815
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1492684809}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1494313252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27880,7 +28036,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16314
+  m_Name: pb_Mesh34056
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -33328,7 +33484,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16302
+  m_Name: pb_Mesh34044
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -33943,7 +34099,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 759, y: -573}
+  m_AnchoredPosition: {x: 795.4, y: -288.8}
   m_SizeDelta: {x: 300, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1992739292
@@ -39388,6 +39544,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 3894453337370531482, guid: a6b5c756a4a158f4b971be365a169b0b,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 22721913920480393, guid: a6b5c756a4a158f4b971be365a169b0b,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -39483,6 +39644,24 @@ MonoBehaviour:
   health: 100
   Blowup: {fileID: 685647065}
   BlowupSound: {fileID: 8300000, guid: 468874cccbc9a374eaf05cabac3fb713, type: 3}
-  audioSource: {fileID: 56212970}
+  audioSource: {fileID: 8296172668529078684}
   tank: {fileID: 1926077154}
   UI: {fileID: 1035058273}
+--- !u!82 &8296172668529078684 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4983811036019676347, guid: a6b5c756a4a158f4b971be365a169b0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4983811036574705411}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8296172668529078688 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4324401490898626373, guid: a6b5c756a4a158f4b971be365a169b0b,
+    type: 3}
+  m_PrefabInstance: {fileID: 4983811036574705411}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172668529078681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ccbd8683f7aa00418b6004f5576e8be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

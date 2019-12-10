@@ -17,7 +17,7 @@ public class TargetHit : MonoBehaviour
         health -= amount;
 
         //if this is the player update the ui
-        if(this.name == "Player")
+        if (this.name == "Player")
         {
             UI.GetComponent<UIController>().UpdateUI();
         }
@@ -45,7 +45,7 @@ public class TargetHit : MonoBehaviour
 
     private void OnCollisionEnter(Collision c)
     {
-        if(c.gameObject.tag == "Bullet")
+        if (c.gameObject.tag == "Bullet")
         {
             TakeDamage(10f);
 
@@ -53,7 +53,8 @@ public class TargetHit : MonoBehaviour
 
             dir = -dir.normalized;
 
-            GetComponent<Rigidbody>().AddForce(dir * 300);
+            GetComponent<Rigidbody>().AddForce(dir * 100);
+
         }
     }
     protected void PlayEffectOnce(ParticleSystem prefab, Vector3 position)

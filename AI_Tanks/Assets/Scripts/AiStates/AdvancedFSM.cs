@@ -20,6 +20,7 @@ namespace Complete
         Enable,
         NoHealth,
 		Hiding,
+        Charge
     }
 
     public enum FSMStateID
@@ -29,7 +30,8 @@ namespace Complete
         Chasing,
         Attacking,
         Dead,
-		Hiding,
+		Fleeing,
+        Ramming
     }
 
     public class AdvancedFSM : FSM

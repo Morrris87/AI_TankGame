@@ -1,89 +1,95 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using StateStuff;
+using Complete;
 
-public class WanderState : State<AI>
+public class WanderState : FSMState
 {
-    private static WanderState _instance;
+    AI enemyAI;
+    float health;
 
-    int currentWaypoint;
+    float elapsedTime;
+    float intervalTime;
 
-    private WanderState()
+    int randNum;
+
+    EnemyController enemyController;
+    public WanderState(AI enemyTank)
     {
-        currentWaypoint = Random.Range(0, 7);
-        
-        if (_instance != null)
-        {
-            return;
-        }
+        stateID = FSMStateID.Patrolling;
+        curRotSpeed = 2.0f;
+        curSpeed = 3.0f;
 
-        _instance = this;
+        enemyAI = enemyTank;
+        health = enemyAI.health;
+
+        enemyController = enemyAI.Turret.GetComponent<EnemyController>();
+
+        randNum = Random.Range(0, 7);
+
+        elapsedTime = 0.0f;
+        intervalTime = 1.0f;
+        enemyAI.navAgent.speed = 3;
     }
-    public static WanderState Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                new WanderState();
-            }
-            return _instance;
-        }
-    }
 
-    public override void EnterState(AI _owner)
+    public override void EnterStateInit()
     {
-
         Debug.Log("Entering Wander State");
     }
 
-    public override void ExitState(AI _owner)
+    public override void Reason()
     {
-        Debug.Log("Exiting Wander State");
+        Transform tank = enemyAI.gameObject.transform;
+        Transform player = enemyAI.Player.transform;
+
+        float dist = Vector3.Distance(tank.position, player.position);
+
+        if (health <= 0)
+        {
+            enemyAI.PerformTransition(Transition.NoHealth);
+            return;
+        }
+
+        if (health <= 15)
+        {
+            enemyAI.PerformTransition(Transition.Hiding);
+            Debug.Log("Hiding");
+            return;
+        }
+
+        if (IsInCurrentRange(tank, player.position, enemyAI.chaseRange))
+        {
+            enemyAI.PerformTransition(Transition.SawPlayer);
+            Debug.Log("Chasing");
+            return;
+        }
     }
 
-    public override void UpdateState(AI _owner)
+    public override void Act()
     {
-        float dist = Vector3.Distance(_owner.transform.position, _owner.Player.transform.position);
+        Transform tank = enemyAI.gameObject.transform;
+        Transform player = enemyAI.Player.transform;
 
-        if (_owner.health <= 0)
-        {
-            _owner.stateMachine.ChangeState(DeathState.Instance);
-        }
+        float dist = Vector3.Distance(tank.position, enemyAI.waypoints[randNum].transform.position);
 
-        if (dist < _owner.chaseRange)
+        if (dist < 0.5f)
         {
-            _owner.stateMachine.ChangeState(ChaseState.Instance);
-        }
-        else if(_owner.health <= 15)
-        {
-            _owner.stateMachine.ChangeState(FleeState.Instance);
-        }
-    }
-
-    public override void Act(AI _owner)
-    {
-        float dist = Vector3.Distance(_owner.transform.position, _owner.waypoints[currentWaypoint].transform.position);
-
-        if(dist < 0.1)
-        {
-            int temp = currentWaypoint;
-            while (temp == currentWaypoint)
+            int temp = randNum;
+            while (temp == randNum)
             {
-                temp = Random.Range(0, 7);
+                randNum = Random.Range(0, 7);
             }
-            currentWaypoint = temp;
         }
         else
         {
-            Vector3 target = _owner.waypoints[currentWaypoint].transform.position - _owner.transform.position;
+            destPos = enemyAI.waypoints[randNum].transform.position;
 
-            Quaternion targetRot = Quaternion.LookRotation(target);
+            Quaternion targetRotation = Quaternion.LookRotation(destPos - tank.position);
 
-            _owner.transform.rotation = Quaternion.Slerp(_owner.transform.rotation, targetRot, 3 * Time.deltaTime);
+            tank.rotation = Quaternion.Slerp(tank.rotation,
+                    targetRotation, Time.deltaTime * curRotSpeed);
 
-            _owner.transform.position += _owner.transform.forward * 7 * Time.deltaTime;
+            enemyAI.navAgent.SetDestination(destPos);
         }
     }
 }

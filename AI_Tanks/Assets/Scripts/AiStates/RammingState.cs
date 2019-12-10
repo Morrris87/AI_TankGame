@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Complete;
 
-public class ChaseState : FSMState
+public class RammingState : FSMState
 {
     AI enemyAI;
     float health;
 
     EnemyController enemyController;
-    public ChaseState(AI enemyTank)
+    public RammingState(AI enemyTank)
     {
-        stateID = FSMStateID.Chasing;
+        stateID = FSMStateID.Ramming;
         curRotSpeed = 2.0f;
-        curSpeed = 3.0f;
+        curSpeed = 7.0f;
 
         enemyAI = enemyTank;
         health = enemyAI.health;
@@ -24,15 +24,13 @@ public class ChaseState : FSMState
 
     public override void EnterStateInit()
     {
-        Debug.Log("Entering Chase State");
+        Debug.Log("Entering Ramming State");
     }
 
     public override void Reason()
     {
         Transform tank = enemyAI.gameObject.transform;
         Transform player = enemyAI.Player.transform;
-
-        float dist = Vector3.Distance(tank.position, player.position);
 
         if (health <= 0)
         {
@@ -43,20 +41,28 @@ public class ChaseState : FSMState
         if (health <= 15)
         {
             enemyAI.PerformTransition(Transition.Hiding);
-            Debug.Log("Wandering");
+            Debug.Log("Hiding");
             return;
         }
-        else if(IsInCurrentRange(tank, player.position, enemyAI.attackRange))
+
+        if (IsInCurrentRange(tank, player.position, enemyAI.chaseRange) && !(IsInCurrentRange(tank, player.position, enemyAI.rammingRange)))
+        {
+            enemyAI.PerformTransition(Transition.SawPlayer);
+            Debug.Log("Chasing");
+            return;
+        }
+
+        if (IsInCurrentRange(tank, player.position, enemyAI.attackRange) && !(IsInCurrentRange(tank, player.position, enemyAI.rammingRange)))
         {
             enemyAI.PerformTransition(Transition.ReachPlayer);
-            Debug.Log("Attack");
+            Debug.Log("Attacking");
             return;
         }
-        else if(!(IsInCurrentRange(tank, player.position, enemyAI.chaseRange)))
+
+        if (!(IsInCurrentRange(tank, player.position, enemyAI.chaseRange)))
         {
             enemyAI.PerformTransition(Transition.LostPlayer);
-            Debug.Log("Lost Player");
-            return;
+            Debug.Log("Wandering");
         }
     }
 
@@ -65,11 +71,13 @@ public class ChaseState : FSMState
         Transform tank = enemyAI.gameObject.transform;
         Transform player = enemyAI.Player.transform;
 
+        //setDestPos
+
         Quaternion targetRotation = Quaternion.LookRotation(player.position - tank.position);
 
         tank.rotation = Quaternion.Slerp(tank.rotation,
                 targetRotation, Time.deltaTime * curRotSpeed);
 
-        enemyAI.navAgent.SetDestination(destPos);
+        enemyAI.navAgent.SetDestination(player.position);
     }
 }

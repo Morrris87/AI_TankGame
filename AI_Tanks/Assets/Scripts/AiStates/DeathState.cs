@@ -1,50 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using StateStuff;
+using Complete;
 
-public class DeathState : State<AI>
+public class DeathState : FSMState
 {
-    private static DeathState _instance;
-
-    private DeathState()
+    public DeathState(AI enemyTank)
     {
-        if (_instance != null)
-        {
-            return;
-        }
-
-        _instance = this;
-    }
-    public static DeathState Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                new DeathState();
-            }
-            return _instance;
-        }
+        AI enemyAI = enemyTank;
+        curSpeed = 0;
+        stateID = FSMStateID.Dead;
+        enemyAI.navAgent.speed = curSpeed;
     }
 
-    public override void EnterState(AI _owner)
+    public override void Act()
     {
-        Debug.Log("Entering Death State");
     }
 
-    public override void ExitState(AI _owner)
+    public override void Reason()
     {
-        Debug.Log("Exiting Daeth State");
-    }
-
-    public override void UpdateState(AI _owner)
-    {
-
-    }
-
-    public override void Act(AI _owner)
-    {
-        throw new System.NotImplementedException();
     }
 }

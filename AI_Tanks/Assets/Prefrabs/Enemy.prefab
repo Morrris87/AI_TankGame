@@ -23714,6 +23714,7 @@ GameObject:
   - component: {fileID: 137131762058648723}
   - component: {fileID: 7213173518089117197}
   - component: {fileID: 137131762058648750}
+  - component: {fileID: 1032419875813586691}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -23875,6 +23876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
+  Turret: {fileID: 0}
   waypoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -23884,10 +23886,16 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  m_CharNumber: 1
+  coverPositionsSlotManager: {fileID: 0}
+  navAgent: {fileID: 1032419875813586691}
+  rigBody: {fileID: 0}
   attackRange: 20
   chaseRange: 35
+  rammingRange: 10
   health: 50
   damage: 10
+  enemyClipSize: 2
 --- !u!114 &137131762058648750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23906,6 +23914,28 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   tank: {fileID: 0}
   UI: {fileID: 0}
+--- !u!195 &1032419875813586691
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 137131762058648722}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &137131762121018285
 GameObject:
   m_ObjectHideFlags: 0
@@ -33448,6 +33478,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &1950870834820186054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7634083809106469872}
+  m_Layer: 0
+  m_Name: Bullet Emitter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7634083809106469872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1950870834820186054}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.95}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8574468626300439316}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2705845205369407665
 GameObject:
   m_ObjectHideFlags: 0
@@ -34103,6 +34163,7 @@ Transform:
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_Children:
   - {fileID: 1092933506725118118}
+  - {fileID: 7634083809106469872}
   m_Father: {fileID: 4999169877816740811}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -34167,6 +34228,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
   turret: {fileID: 0}
+  Bullet_Emitter: {fileID: 1950870834820186054}
+  Bullet: {fileID: 4467172675236091571, guid: b5572e95841bbdd4e92575dc1acad150, type: 3}
+  Bullet_Forward_Force: -1000
+  attack: 0
 --- !u!1 &7366353700939488203
 GameObject:
   m_ObjectHideFlags: 0
