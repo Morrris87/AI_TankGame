@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Complete;
+using UnityEngine.AI;
 
 public class WanderState : FSMState
 {
@@ -12,6 +13,7 @@ public class WanderState : FSMState
     float intervalTime;
 
     int randNum;
+    Rigidbody r;
 
     EnemyController enemyController;
     public WanderState(AI enemyTank)
@@ -30,10 +32,16 @@ public class WanderState : FSMState
         elapsedTime = 0.0f;
         intervalTime = 1.0f;
         enemyAI.navAgent.speed = 3;
+        r = enemyAI.GetComponent<Rigidbody>();
     }
 
     public override void EnterStateInit()
     {
+        if (!r.isKinematic)
+        {
+            r.isKinematic = true;
+        }
+
         Debug.Log("Entering Wander State");
     }
 
@@ -43,6 +51,11 @@ public class WanderState : FSMState
         Transform player = enemyAI.Player.transform;
 
         float dist = Vector3.Distance(tank.position, player.position);
+
+        if (tank.position.y < 399)
+        {
+            GameObject.Destroy(enemyAI);
+        }
 
         if (health <= 0)
         {
@@ -72,7 +85,7 @@ public class WanderState : FSMState
 
         float dist = Vector3.Distance(tank.position, enemyAI.waypoints[randNum].transform.position);
 
-        if (dist < 0.5f)
+        if (dist < 1.0f)
         {
             int temp = randNum;
             while (temp == randNum)

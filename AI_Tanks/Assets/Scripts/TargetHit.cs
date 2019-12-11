@@ -1,5 +1,7 @@
 ﻿
+using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TargetHit : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class TargetHit : MonoBehaviour
     public AudioSource audioSource;
     public GameObject tank;
     public GameObject UI;
+
+    float elapsedTime;
 
     public void TakeDamage(float amount)
     {
@@ -26,6 +30,11 @@ public class TargetHit : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void Awake()
+    {
+        elapsedTime = 0;        
     }
 
     void Die()
@@ -45,16 +54,33 @@ public class TargetHit : MonoBehaviour
 
     private void OnCollisionEnter(Collision c)
     {
+
+        Vector3 dir = c.GetContact(0).point - transform.position;
+
+        dir = -dir.normalized;
+
         if (c.gameObject.tag == "Bullet")
         {
+            AI aIScript = GetComponent<AI>();
             TakeDamage(10f);
 
-            Vector3 dir = c.GetContact(0).point - transform.position;
 
-            dir = -dir.normalized;
+            KnockBack(dir, 300);                       
 
-            GetComponent<Rigidbody>().AddForce(dir * 100);
+            if (aIScript)
+            {
+              //  aIScript.navAgent.
+            }
+        }
 
+        else if(c.gameObject.tag == "Player")
+        {
+            KnockBack(dir, 100);
+        }
+
+        else if (c.gameObject.tag == "Enemy")
+        {
+           KnockBack(dir, 100);
         }
     }
     protected void PlayEffectOnce(ParticleSystem prefab, Vector3 position)
@@ -69,5 +95,30 @@ public class TargetHit : MonoBehaviour
     void FixedUpdate()
     {
         //uiController.UpdateUI();
+    }
+    void KnockBack(Vector3 dir, int force)
+    {
+        Rigidbody r = GetComponent<Rigidbody>();
+
+        if(this.tag == "Enemy")
+        {
+            GetComponent<NavMeshAgent>().enabled = false;
+        }        
+
+        r.isKinematic = false;
+        r.AddForce(dir * force);
+
+        while (elapsedTime < 2.5f)
+        {
+            elapsedTime += Time.deltaTime;
+        }
+
+        elapsedTime = 0;
+
+        if (this.tag == "Enemy")
+        {
+            r.isKinematic = true;
+            GetComponent<NavMeshAgent>().enabled = true;
+        }
     }
 }

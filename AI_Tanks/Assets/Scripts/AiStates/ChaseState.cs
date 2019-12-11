@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Complete;
+using UnityEngine.AI;
 
 public class ChaseState : FSMState
 {
     AI enemyAI;
     float health;
+    Rigidbody r;
 
     EnemyController enemyController;
     public ChaseState(AI enemyTank)
@@ -20,10 +22,16 @@ public class ChaseState : FSMState
 
         enemyController = enemyAI.Turret.GetComponent<EnemyController>();
         enemyAI.navAgent.speed = curSpeed;
+        r = enemyAI.GetComponent<Rigidbody>();
     }
 
     public override void EnterStateInit()
     {
+        if (!r.isKinematic)
+        {
+            r.isKinematic = true;
+        }
+
         Debug.Log("Entering Chase State");
     }
 
@@ -33,6 +41,11 @@ public class ChaseState : FSMState
         Transform player = enemyAI.Player.transform;
 
         float dist = Vector3.Distance(tank.position, player.position);
+
+        if (tank.position.y < 399)
+        {
+            GameObject.Destroy(enemyAI);
+        }
 
         if (health <= 0)
         {
@@ -64,12 +77,30 @@ public class ChaseState : FSMState
     {
         Transform tank = enemyAI.gameObject.transform;
         Transform player = enemyAI.Player.transform;
+        SlotManager playerSlots = enemyAI.Player.GetComponent<SlotManager>();
+
+
+        destPos =  playerSlots.GetSlotPosition(playerSlots.ReserveSlotAroundObject(enemyAI.gameObject));
 
         Quaternion targetRotation = Quaternion.LookRotation(player.position - tank.position);
 
         tank.rotation = Quaternion.Slerp(tank.rotation,
                 targetRotation, Time.deltaTime * curRotSpeed);
 
-        enemyAI.navAgent.SetDestination(destPos);
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(destPos, out hit, 0.1f, NavMesh.AllAreas))
+        {
+            //On the mesh
+            enemyAI.navAgent.SetDestination(destPos);
+        }
+        else
+        {
+            //off the mesh
+            if (NavMesh.SamplePosition(destPos, out hit, 4.1f, NavMesh.AllAreas))
+            {
+                enemyAI.navAgent.SetDestination(hit.position);
+            }
+        }
     }
 }

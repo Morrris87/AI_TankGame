@@ -90,7 +90,6 @@ public class AI : AdvancedFSM
             CurrentState.Reason();
             CurrentState.Act();
             id = CurrentStateID;
-
         }
     }
 

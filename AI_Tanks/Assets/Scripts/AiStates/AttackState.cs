@@ -11,6 +11,7 @@ public class AttackState : FSMState
     float intervalTime;
     float shotElapsed;
     float shotTimer;
+    Rigidbody r;
 
     int shotCount;
     EnemyController enemyController;
@@ -32,11 +33,18 @@ public class AttackState : FSMState
         shotCount = 0;
 
         enemyAI.navAgent.speed = curSpeed;
+        r = enemyAI.GetComponent<Rigidbody>();
     }
 
     public override void EnterStateInit()
     {
         elapsedTime = 0.0f;
+
+        if (!r.isKinematic)
+        {
+            r.isKinematic = true;
+        }
+
         Debug.Log("Entering Attack State");
     }
 
@@ -46,6 +54,11 @@ public class AttackState : FSMState
         Transform player = enemyAI.Player.transform;
 
         float dist = Vector3.Distance(tank.position, player.position);
+
+        if (tank.position.y < 399)
+        {
+            GameObject.Destroy(enemyAI);
+        }
 
         if (health <= 0)
         {
@@ -96,13 +109,17 @@ public class AttackState : FSMState
             {
                 enemyAI.PerformTransition(Transition.LostPlayer);
             }
-        }
-
-        
+        }        
     }
 
     public override void Act()
     {
+        Transform tank = enemyAI.gameObject.transform;
+        Transform player = enemyAI.Player.transform;
 
+        Quaternion targetRotation = Quaternion.LookRotation(player.position - tank.position);
+
+        tank.rotation = Quaternion.Slerp(tank.rotation,
+                targetRotation, Time.deltaTime * curRotSpeed);
     }
 }

@@ -10,6 +10,7 @@ public class FleeState : FSMState
 
     float elapsedTime;
     float intervalTime;
+    Rigidbody r;
 
     EnemyController enemyController;
     public FleeState(AI enemyTank)
@@ -26,10 +27,16 @@ public class FleeState : FSMState
         elapsedTime = 0.0f;
         intervalTime = 1.0f;
         enemyAI.navAgent.speed = curSpeed;
+        r = enemyAI.GetComponent<Rigidbody>();
     }
 
     public override void EnterStateInit()
     {
+        if (!r.isKinematic)
+        {
+            r.isKinematic = true;
+        }
+
         Debug.Log("Entering Flee State");
     }
 
@@ -39,6 +46,11 @@ public class FleeState : FSMState
         Transform player = enemyAI.Player.transform;
 
         float dist = Vector3.Distance(tank.position, player.position);
+
+        if (tank.position.y < 399)
+        {
+            GameObject.Destroy(enemyAI);
+        }
 
         if (health <= 0)
         {
