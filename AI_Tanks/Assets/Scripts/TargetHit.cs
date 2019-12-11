@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class TargetHit : MonoBehaviour
 {
@@ -31,6 +32,10 @@ public class TargetHit : MonoBehaviour
             if (tag != "Player")
             {
                 Die();
+                if(this.name == "BOSS")
+                {
+                    SceneManager.LoadScene("GameOver");
+                }
             }
             else
             {
@@ -42,6 +47,10 @@ public class TargetHit : MonoBehaviour
                 else
                 {
                     Die();
+                    if (this.name == "BOSS" || this.tag == "Player")
+                    {                       
+                        SceneManager.LoadScene("GameOver");
+                    }
                 }
             }
         }
