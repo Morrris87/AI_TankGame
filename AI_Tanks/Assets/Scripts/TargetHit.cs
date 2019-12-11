@@ -28,7 +28,22 @@ public class TargetHit : MonoBehaviour
 
         if (health <= 0f)
         {
-            Die();
+            if (tag != "Player")
+            {
+                Die();
+            }
+            else
+            {
+                if (GetComponent<Lives>().lives <= 0)
+                {
+                    GetComponent<Lives>().Respawn();
+                    health = 50.0f;
+                }
+                else
+                {
+                    Die();
+                }
+            }
         }
     }
 
@@ -40,14 +55,23 @@ public class TargetHit : MonoBehaviour
     void Die()
     {
         GetComponent<BoxCollider>().enabled = false;
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+
+        if (tag == "Enemy" || tag == "Player")
+        {
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }        
 
         Blowup.Play();
         audioSource.PlayOneShot(BlowupSound);
 
         transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
 
+        if (tag == "Enemy")
+        {
+            GameManager.Instance.Enemies.Remove(gameObject);
+        }
+        
         Destroy(tank, 0.2f);
         Destroy(gameObject, 4.2f);
     }
@@ -65,7 +89,7 @@ public class TargetHit : MonoBehaviour
             TakeDamage(10f);
 
 
-            KnockBack(dir, 300);                       
+            KnockBack(dir, 150);                       
 
             if (aIScript)
             {

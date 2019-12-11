@@ -121,13 +121,13 @@ public class AI : AdvancedFSM
         chase.AddTransition(Transition.ReachPlayer, FSMStateID.Attacking);
         chase.AddTransition(Transition.Enable, FSMStateID.Patrolling);
 
-        RammingState charge = new RammingState(this);
-        charge.AddTransition(Transition.NoHealth, FSMStateID.Dead);
-        charge.AddTransition(Transition.LostPlayer, FSMStateID.Patrolling);
-        charge.AddTransition(Transition.SawPlayer, FSMStateID.Chasing);
-        charge.AddTransition(Transition.Hiding, FSMStateID.Fleeing);
-        charge.AddTransition(Transition.ReachPlayer, FSMStateID.Attacking);
-        charge.AddTransition(Transition.Enable, FSMStateID.Patrolling);
+        //RammingState charge = new RammingState(this);
+        //charge.AddTransition(Transition.NoHealth, FSMStateID.Dead);
+        //charge.AddTransition(Transition.LostPlayer, FSMStateID.Patrolling);
+        //charge.AddTransition(Transition.SawPlayer, FSMStateID.Chasing);
+        //charge.AddTransition(Transition.Hiding, FSMStateID.Fleeing);
+        //charge.AddTransition(Transition.ReachPlayer, FSMStateID.Attacking);
+        //charge.AddTransition(Transition.Enable, FSMStateID.Patrolling);
 
         DeathState death = new DeathState(this);
 
@@ -136,7 +136,7 @@ public class AI : AdvancedFSM
         AddFSMState(death);
         AddFSMState(flee);
         AddFSMState(chase);
-        AddFSMState(charge);
+        //AddFSMState(charge);
 
         navAgent.speed = 3.0f;
     }
