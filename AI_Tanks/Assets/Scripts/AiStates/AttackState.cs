@@ -11,6 +11,7 @@ public class AttackState : FSMState
     float intervalTime;
     float shotElapsed;
     float shotTimer;
+    int shotCount;
     Rigidbody r;
 
     //int shotCount;
@@ -30,7 +31,7 @@ public class AttackState : FSMState
 
         shotElapsed = 0.0f;
         shotTimer = 4.0f;
-        //shotCount = 0;
+        shotCount = 0;
 
         enemyAI.navAgent.speed = curSpeed;
         r = enemyAI.GetComponent<Rigidbody>();
@@ -87,15 +88,14 @@ public class AttackState : FSMState
             {
                 enemyController.attack = true;
                 shotElapsed = 0.0f;
-                //shotCount++;
+                shotCount++;
             }
-            //if (shotCount > enemyAI.enemyClipSize)
-            //{
-            //    enemyAI.PerformTransition(Transition.Charge);
-            //    shotCount = 0;
-            //    return;
-            //}
-
+            if (shotCount > enemyAI.enemyClipSize && IsInCurrentRange(tank, player.position, enemyAI.chaseRange))
+            {
+                enemyAI.PerformTransition(Transition.SawPlayer);
+                shotCount = 0;
+            }
+            return;
         }
 
         else

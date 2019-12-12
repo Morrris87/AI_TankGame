@@ -107,7 +107,6 @@ public class AI : AdvancedFSM
         attack.AddTransition(Transition.LostPlayer, FSMStateID.Patrolling);
         attack.AddTransition(Transition.SawPlayer, FSMStateID.Chasing);
         attack.AddTransition(Transition.Hiding, FSMStateID.Fleeing);
-        attack.AddTransition(Transition.Charge, FSMStateID.Ramming);
                 
         FleeState flee = new FleeState(this);
         flee.AddTransition(Transition.NoHealth, FSMStateID.Dead);

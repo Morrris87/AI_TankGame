@@ -48,7 +48,7 @@ public class EnemyController : MonoBehaviour
 
         Temporary_RigidBody = Temporary_Bullet_Handler.GetComponent<Rigidbody>();
 
-        Temporary_RigidBody.AddForce(transform.forward * Bullet_Forward_Force);
+        Temporary_RigidBody.AddForce(Bullet_Emitter.transform.forward * Bullet_Forward_Force);
 
         Destroy(Temporary_Bullet_Handler, 10.0f);
 

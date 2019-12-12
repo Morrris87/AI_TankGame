@@ -79,8 +79,7 @@ public class ChaseState : FSMState
         Transform player = enemyAI.Player.transform;
         SlotManager playerSlots = enemyAI.Player.GetComponent<SlotManager>();
 
-
-        destPos =  playerSlots.GetSlotPosition(playerSlots.ReserveSlotAroundObject(enemyAI.gameObject));
+        destPos = playerSlots.GetSlotPosition(playerSlots.ReserveSlotAroundObject(enemyAI.gameObject));
 
         Quaternion targetRotation = Quaternion.LookRotation(player.position - tank.position);
 
