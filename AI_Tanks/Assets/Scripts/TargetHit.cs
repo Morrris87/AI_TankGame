@@ -14,7 +14,7 @@ public class TargetHit : MonoBehaviour
     public AudioSource audioSource;
     public GameObject tank;
     public GameObject UI;
-
+    private bool animDone = false;//checks if the players death anim has finished playing beofre changing scene
     float elapsedTime;
 
     public void TakeDamage(float amount)
@@ -31,8 +31,8 @@ public class TargetHit : MonoBehaviour
         {
             if (tag != "Player")
             {
-                Die();
-                if(this.name == "BOSS")
+                StartCoroutine(Die());
+                if (this.name == "BOSS" && animDone)
                 {
                     SceneManager.LoadScene("GameOver");
                 }
@@ -46,8 +46,8 @@ public class TargetHit : MonoBehaviour
                 }
                 else
                 {
-                    Die();
-                    if (this.name == "BOSS" || this.tag == "Player")
+                    StartCoroutine(Die());
+                    if (this.name == "BOSS" || this.tag == "Player" && animDone)
                     {                       
                         SceneManager.LoadScene("GameOver");
                     }
@@ -61,8 +61,20 @@ public class TargetHit : MonoBehaviour
         elapsedTime = 0;        
     }
 
-    void Die()
+    IEnumerator Die()
     {
+        if (this.name != "BOSS")
+            tank.GetComponent<Animation>().Play("Death");
+        Blowup.Play();
+        audioSource.PlayOneShot(BlowupSound);
+        if (this.name != "BOSS")
+        {
+            do
+            {
+                yield return null;
+            } while (tank.GetComponent<Animation>().isPlaying);
+        }
+
         GetComponent<BoxCollider>().enabled = false;
 
         if (tag == "Enemy" || tag == "Player")
@@ -71,18 +83,21 @@ public class TargetHit : MonoBehaviour
             GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }        
 
-        Blowup.Play();
-        audioSource.PlayOneShot(BlowupSound);
-
         transform.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
 
         if (tag == "Enemy")
         {
             GameManager.Instance.Enemies.Remove(gameObject);
         }
-        
+        animDone = true;
+       
         Destroy(tank, 0.2f);
         Destroy(gameObject, 4.2f);
+        if(this.tag == "Player")
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+        yield return null;
     }
 
     private void OnCollisionEnter(Collision c)
@@ -97,8 +112,10 @@ public class TargetHit : MonoBehaviour
             AI aIScript = GetComponent<AI>();
             TakeDamage(10f);
 
-
-            KnockBack(dir, 150);                       
+            if (this.name != "BOSS")
+            {
+                KnockBack(dir, 150);
+            }
 
             if (aIScript)
             {

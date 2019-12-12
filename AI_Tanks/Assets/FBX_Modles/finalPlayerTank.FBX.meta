@@ -1,14 +1,11 @@
 fileFormatVersion: 2
-guid: 77870ec0eb24fb24c86cb0803b25e775
+guid: 8f554bacfa8221a4d952825eedc41e4d
 ModelImporter:
   serializedVersion: 26
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: Idle
-  - first:
-      74: -139364887524879693
-    second: move
+    second: PlayerIdle
   - first:
       74: 4348485665485846014
     second: Death
@@ -41,7 +38,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Idle
+      name: PlayerIdle
       takeName: Take 001
       internalID: 0
       firstFrame: 0
@@ -70,40 +67,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: move
-      takeName: Take 001
-      internalID: 0
-      firstFrame: 3
-      lastFrame: 30
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: Death
       takeName: Take 001
       internalID: 0
-      firstFrame: 31
-      lastFrame: 49
+      firstFrame: 30
+      lastFrame: 46
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

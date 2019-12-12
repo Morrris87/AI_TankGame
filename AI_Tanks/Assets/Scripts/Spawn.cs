@@ -16,7 +16,7 @@ public class Spawn : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int spot = 0;//Random.Range(0, 4);
+    /*    int spot = 0;//Random.Range(0, 4);
         if(spot == 0)
         {
             player.transform.position = Spawn1.transform.position;
@@ -41,7 +41,7 @@ public class Spawn : MonoBehaviour
         {
             player.transform.position = Spawn4.transform.position;
             player.transform.rotation = Quaternion.identity;//make rotate towarde the centerw
-        }
+        }*/
     }
 
     // Update is called once per frame
